@@ -83,6 +83,7 @@ def print_task(taskname, exectime, time1, parser, f):
         timestamp = timestamp + parser[0] + "." + parser[len(parser)-5] + "." + parser[len(parser)-3] + " " + "Entry\n"
     else:
         timestamp = timestamp + parser[0] + "." + parser[len(parser)-3] + " " + "Entry\n"
+    print(timestamp)
     f.write(timestamp)
     time.sleep(int(exectime.strip()))
     timestamp = time1 + ";"
@@ -92,6 +93,7 @@ def print_task(taskname, exectime, time1, parser, f):
         timestamp = timestamp + parser[0] + "." + parser[len(parser)-3]
         timestamp = timestamp + " Executing TimeFunction "
         timestamp = timestamp + "(" + taskname + ", " + exectime + ")\n"
+    print(timestamp)
     f.write(timestamp)
     print(parser)
     timestamp = time1 + ";"
@@ -99,6 +101,7 @@ def print_task(taskname, exectime, time1, parser, f):
             timestamp = timestamp + parser[0] + "." + parser[len(parser)-5] + "." + parser[len(parser)-3] + " " + "Exit\n"
     else:
             timestamp = timestamp + parser[0] + "." + parser[len(parser)-3] + " " + "Exit\n"
+    print(timestamp)
     f.write(timestamp)
 
     
@@ -140,7 +143,7 @@ def print_log():
         parser = workflow_list[i][0].split('.')
         if(workflow_list[i][1] == "Sequential" and parser[len(parser)-1]=="Execution"):
             sequential(count, workflow_list, time, f)
-        else:
+        elif(workflow_list[i][1] == "Concurrent" and parser[len(parser)-1]=="Execution"):
             concurrent(count, workflow_list, time, f)
         count = count+1
     for i in range(0,len(workflow_list)):
@@ -148,7 +151,7 @@ def print_log():
         if(parser[1] == "Activities" and parser[len(parser)-1]=="Type" and workflow_list[i][1]=="Flow"):
             t = datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
             timestamp = t + ";"
-            timestamp = timestamp + parser[0] + "." + parser[len(parser)-2] + " Entry\n"
+            timestamp = timestamp + parser[0] + "." + parser[len(parser)-2] + " Exit\n"
             f.write(timestamp)
     timestamp = ''  
     timestamp += timestamp + datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -156,7 +159,7 @@ def print_log():
     key = data.keys()
     for k in key:
         timestamp += k
-        timestamp += " Exit"
+        timestamp += " Exit\n"
     f.write(timestamp)  
     
     f.close()
